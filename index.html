@@ -3,117 +3,123 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simulador do Filtro CTX‑432</title>
+  <title>Simulador CTX‑432 – Água Viva</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4fdf7;
-      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #e6f4f1;
       padding: 20px;
       color: #222;
-    }
-    header {
-      text-align: center;
-      padding: 20px;
-      background-color: #1f8b4c;
-      color: white;
-      border-radius: 10px;
-    }
-    .container {
-      max-width: 800px;
+      max-width: 700px;
       margin: auto;
-      padding: 30px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    label {
-      margin-top: 15px;
+    h1 {
+      text-align: center;
+      color: #1f8b4c;
+    }
+    label, select, input {
       display: block;
-      font-weight: bold;
-    }
-    select, input {
+      margin-top: 20px;
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
     }
     button {
-      margin-top: 20px;
       background-color: #1f8b4c;
       color: white;
       border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      cursor: pointer;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
       font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
     }
     .resultado {
-      margin-top: 25px;
+      margin-top: 30px;
       padding: 15px;
-      background: #e8fbe9;
-      border-left: 5px solid #1f8b4c;
+      background-color: #fff;
+      border-left: 6px solid #1f8b4c;
       border-radius: 6px;
-      font-size: 18px;
+    }
+    .grafico {
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .barra {
+      height: 100%;
+      background-color: #1f8b4c;
+      width: 0%;
+      text-align: right;
+      color: white;
+      padding-right: 10px;
+    }
+    .missao {
+      font-style: italic;
+      margin-top: 30px;
+      text-align: center;
+      color: #333;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🧪 Simulador CTX‑432</h1>
-    <p>Filtragem Biointeligente – Plataforma Águas Vivas Angola</p>
-  </header>
+  <h1>💧 Simulador CTX‑432</h1>
+  <p>Simule a eficácia do filtro biointeligente CTX‑432 na purificação da água.</p>
 
-  <div class="container">
-    <p>Este simulador demonstra como o filtro CTX‑432 atua sobre diferentes tipos de água contaminada. Escolha o tipo de água e a quantidade a ser filtrada para ver o resultado estimado.</p>
+  <label for="nivel">Nível de contaminação da água:</label>
+  <select id="nivel">
+    <option value="leve">Leve</option>
+    <option value="moderado">Moderado</option>
+    <option value="severo">Severo</option>
+  </select>
 
-    <label for="tipoAgua">Tipo de Água Contaminada:</label>
-    <select id="tipoAgua">
-      <option value="leve">Água com leve turbidez</option>
-      <option value="moderada">Água com matéria orgânica visível</option>
-      <option value="alta">Água com carga bacteriana alta (ex: cólera)</option>
-    </select>
+  <label for="litros">Quantidade de água (litros):</label>
+  <input type="number" id="litros" placeholder="Ex: 10" />
 
-    <label for="quantidade">Quantidade de Água (litros):</label>
-    <input type="number" id="quantidade" min="1" max="100" value="10"/>
+  <label for="custo">Custo estimado por litro (USD):</label>
+  <input type="number" id="custo" placeholder="Ex: 0.03" />
 
-    <button onclick="simularFiltragem()">Simular Filtragem</button>
+  <button onclick="simular()">Simular Filtragem</button>
 
-    <div id="resultado" class="resultado"></div>
+  <div id="saida" class="resultado" style="display:none;">
+    <p id="texto"></p>
+    <div class="grafico"><div class="barra" id="barra"></div></div>
   </div>
 
-  <script>
-    function simularFiltragem() {
-      const tipo = document.getElementById("tipoAgua").value;
-      const litros = parseInt(document.getElementById("quantidade").value);
-      let eficacia = 0;
-      let tempo = 0;
+  <p class="missao">“Cada gota que filtramos é uma vida protegida. Água é dignidade, ciência é justiça.”<br> — Dala De Carvalho</p>
 
-      switch(tipo) {
-        case "leve":
-          eficacia = 99;
-          tempo = litros * 0.5;
-          break;
-        case "moderada":
-          eficacia = 95;
-          tempo = litros * 0.8;
-          break;
-        case "alta":
-          eficacia = 91;
-          tempo = litros * 1.2;
-          break;
+  <script>
+    function simular() {
+      const nivel = document.getElementById("nivel").value;
+      const litros = parseFloat(document.getElementById("litros").value);
+      const custoUnit = parseFloat(document.getElementById("custo").value);
+      let eficiencia, tempo;
+
+      if (nivel === "leve") {
+        eficiencia = 95;
+        tempo = 1;
+      } else if (nivel === "moderado") {
+        eficiencia = 88;
+        tempo = 2;
+      } else {
+        eficiencia = 75;
+        tempo = 3;
       }
 
-      const resultado = `
-        💧 <strong>Resultado da Filtragem:</strong><br>
-        ➤ Tipo de água: <strong>${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</strong><br>
-        ➤ Quantidade: <strong>${litros} litros</strong><br>
-        ➤ Eficácia estimada da filtragem: <strong>${eficacia}%</strong><br>
-        ➤ Tempo aproximado: <strong>${tempo.toFixed(1)} minutos</strong><br><br>
-        ✅ A água estará própria para uso básico ou potável com supervisão local.
-      `;
-      document.getElementById("resultado").innerHTML = resultado;
+      const custoTotal = (litros * custoUnit).toFixed(2);
+
+      document.getElementById("texto").innerHTML =
+        `🧪 Nível de contaminação: <strong>${nivel}</strong><br>
+        💧 Quantidade: <strong>${litros} litros</strong><br>
+        ⏳ Tempo estimado de filtragem: <strong>${tempo} horas</strong><br>
+        ✅ Eficiência estimada: <strong>${eficiencia}%</strong><br>
+        💲 Custo total estimado: <strong>$${custoTotal}</strong>`;
+
+      document.getElementById("barra").style.width = eficiencia + "%";
+      document.getElementById("barra").innerText = eficiencia + "%";
+
+      document.getElementById("saida").style.display = "block";
     }
   </script>
 </body>
